@@ -3,7 +3,7 @@ dotenv.config();
 import express, { Express } from "express";
 
 import mongoose from "mongoose";
-import { JobPosting } from "../lib/model";
+import { JobPosting } from "../lib/JobPosting";
 const app: Express = express();
 
 app.use(express.json());
@@ -12,11 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", async function (req, res) {
   const { location = "", title = "", publicationDate = "", company = "" } = req.query;
   const locationArr = Array.isArray(location) ? location : [location];
-  await JobPosting.find({
-    company:{
-        
-    }
-  });
+  await JobPosting.find({});
 });
 
 const start = async () => {
