@@ -43,7 +43,6 @@ const scrapeKalibrrJobsIter = async(jobId: number, page: any, config: Config) =>
 
     const createdJob = new JobPosting({
       title: jobTitle,
-      publicationDate: new Date(),
       location: jobLocation,
       company: jobCompany,
       source: jobSource,
