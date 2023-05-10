@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface JobPostingAttributes {
+export interface JobPostingAttributes {
   title: string;
   publicationDate: Date;
   location: string;
@@ -17,7 +17,9 @@ interface JobPostingDoc extends mongoose.Document {
   source: string;
   url: string;
 }
-interface JobPostingModel extends mongoose.Model<JobPostingDoc> {}
+interface JobPostingModel extends mongoose.Model<JobPostingDoc> {
+  build(attrs: JobPostingAttributes): JobPostingDoc;
+}
 
 const JobPostingSchema = new mongoose.Schema<JobPostingDoc>(
   {
@@ -44,6 +46,8 @@ const JobPostingSchema = new mongoose.Schema<JobPostingDoc>(
     url: {
       type: String,
       required: true,
+      unique: true,
+      dropDups: true,
     },
   },
   {
@@ -55,6 +59,12 @@ const JobPostingSchema = new mongoose.Schema<JobPostingDoc>(
     },
   }
 );
+
+JobPostingSchema.statics.build = (attributes: JobPostingAttributes) => {
+  return new JobPosting({
+    ...attributes,
+  });
+};
 
 const JobPosting = mongoose.model<JobPostingDoc, JobPostingModel>("JobPosting", JobPostingSchema);
 

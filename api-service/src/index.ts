@@ -4,15 +4,46 @@ import express, { Express } from "express";
 
 import mongoose from "mongoose";
 import { JobPosting } from "../lib/JobPosting";
+import { DUMMY_JOB } from "../lib/dummy";
 const app: Express = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", async function (req, res) {
-  const { location = "", title = "", publicationDate = "", company = "" } = req.query;
-  const locationArr = Array.isArray(location) ? location : [location];
-  await JobPosting.find({});
+  try {
+    const {
+      location = [],
+      title = [],
+      from = "",
+      to = new Date().toISOString().split("T")[0],
+      company = [],
+    } = req.query;
+    const locationArr = Array.isArray(location) ? location : [location];
+    const titleArr = Array.isArray(title) ? title : [title];
+    const companyArr = Array.isArray(company) ? company : [company];
+    let publicationDate: any = {
+      $lt: to,
+    };
+    if (!!from) {
+      publicationDate = {
+        ...publicationDate,
+        $gt: from,
+      };
+    }
+    const option = {
+      title: { $regex: RegExp(titleArr.length == 0 ? "" : titleArr.join("|")), $options: "i" },
+      location: { $regex: RegExp(locationArr.length == 0 ? "" : locationArr.join("|")), $options: "i" },
+      company: { $regex: RegExp(companyArr.length == 0 ? "" : companyArr.join("|")), $options: "i" },
+      publicationDate,
+    };
+    console.log(option);
+    const result = await JobPosting.find(option);
+    res.json(result);
+  } catch (err) {
+    res.status(500);
+    res.json({ error: err });
+  }
 });
 
 const start = async () => {
@@ -24,8 +55,20 @@ const start = async () => {
   await mongoose.connect(process.env.MONGO_URI).catch((err) => {
     console.error(err);
   });
-  app.listen(8000, () => {
-    console.log("8000");
+  await JobPosting.deleteMany();
+  const promises: Promise<any>[] = DUMMY_JOB.map((job) => {
+    const jobposting = JobPosting.build(job);
+    return jobposting.save();
+  });
+  await Promise.all(promises)
+    .then((res) => {
+      console.log("success menambah dummy data");
+    })
+    .catch((err) => {
+      console.log("Error: " + err);
+    });
+  app.listen(8000, async () => {
+    console.log("Open on 8000");
   });
 };
 start();
