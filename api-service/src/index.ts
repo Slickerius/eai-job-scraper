@@ -22,6 +22,7 @@ app.get("/", async function (req, res) {
     const locationArr = Array.isArray(location) ? location : [location];
     const titleArr = Array.isArray(title) ? title : [title];
     const companyArr = Array.isArray(company) ? company : [company];
+    let or = [];
     let publicationDate: any = {
       $lt: to,
     };
@@ -31,17 +32,30 @@ app.get("/", async function (req, res) {
         $gt: from,
       };
     }
-    const option = {
+    const optionSansDate = {
       title: { $regex: RegExp(titleArr.length == 0 ? "" : titleArr.join("|")), $options: "i" },
       location: { $regex: RegExp(locationArr.length == 0 ? "" : locationArr.join("|")), $options: "i" },
       company: { $regex: RegExp(companyArr.length == 0 ? "" : companyArr.join("|")), $options: "i" },
-      publicationDate,
     };
-    console.log(option);
-    const result = await JobPosting.find(option);
+    console.log(optionSansDate);
+    const result = await JobPosting.find({
+      $or: [
+        {
+          ...optionSansDate,
+          publicationDate,
+        },
+        {
+          ...optionSansDate,
+          publicationDate: {
+            $exists: false,
+          },
+        },
+      ],
+    });
     res.json(result);
   } catch (err) {
     res.status(500);
+    console.error(err);
     res.json({ error: err });
   }
 });

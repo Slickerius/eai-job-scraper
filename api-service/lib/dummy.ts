@@ -29,7 +29,6 @@ export const DUMMY_JOB: JobPostingAttributes[] = [
     title: "Programmer php",
     company: "Google",
     location: "Jepang",
-    publicationDate: new Date(Date.parse("2023-02-03")),
     source: "linkedin",
     url: "/url4",
   },
