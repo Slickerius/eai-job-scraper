@@ -50,7 +50,11 @@ const scrapeKalibrrJobsIter = async(jobId: number, page: any, config: Config) =>
       url: jobUrl,
     });
 
-    createdJob.save();
+    try {
+      await createdJob.save();
+    } catch (err) {
+      console.error(`Failed to save job: ${err}`);
+    }
   }
 };
 
