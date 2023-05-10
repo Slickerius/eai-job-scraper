@@ -1,0 +1,19 @@
+{
+  "urls": {
+    "karir": [],
+    "jobstreet": [
+      "https://www.jobstreet.co.id/id/programmer-jobs?pg=",
+      "https://www.jobstreet.co.id/id/data-jobs?pg=",
+      "https://www.jobstreet.co.id/id/network-jobs?pg=",
+      "https://www.jobstreet.co.id/id/cyber-security-jobs?pg="
+    ],
+    "kalibrr": [
+      "https://www.kalibrr.com/id-ID/job-board/te/programmer/",
+      "https://www.kalibrr.com/id-ID/job-board/te/data/",
+      "https://www.kalibrr.com/id-ID/job-board/te/network/",
+      "https://www.kalibrr.com/id-ID/job-board/te/cyber-security/"
+    ],
+    "linkedin": []
+  },
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+}
