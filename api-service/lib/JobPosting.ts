@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
-interface JobPostingAttributes {
-  _id: string;
+export interface JobPostingAttributes {
   title: string;
-  publicationDate: string;
+  publicationDate: Date;
   location: string;
   company: string;
   source: string;
@@ -12,7 +11,7 @@ interface JobPostingAttributes {
 
 interface JobPostingDoc extends mongoose.Document {
   title: string;
-  publicationDate: string;
+  publicationDate: Date;
   location: string;
   company: string;
   source: string;
@@ -22,34 +21,34 @@ interface JobPostingModel extends mongoose.Model<JobPostingDoc> {
   build(attrs: JobPostingAttributes): JobPostingDoc;
 }
 
-const JobPostingSchema = new mongoose.Schema(
+const JobPostingSchema = new mongoose.Schema<JobPostingDoc>(
   {
-    store: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Store",
-      required: true,
-    },
     title: {
       type: String,
       required: true,
     },
-    price: {
-      type: Number,
-      required: true,
-    },
-    description: {
+    company: {
       type: String,
       required: true,
     },
-    qty: {
-      type: Number,
+    location: {
+      type: String,
       required: true,
     },
-    order_id: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-      },
-    ],
+    publicationDate: {
+      type: mongoose.Schema.Types.Date,
+      required: true,
+    },
+    source: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+      unique: true,
+      dropDups: true,
+    },
   },
   {
     toJSON: {
@@ -61,9 +60,12 @@ const JobPostingSchema = new mongoose.Schema(
   }
 );
 
-const JobPosting = mongoose.model<JobPostingDoc, JobPostingModel>(
-  "JobPosting",
-  JobPostingSchema
-);
+JobPostingSchema.statics.build = (attributes: JobPostingAttributes) => {
+  return new JobPosting({
+    ...attributes,
+  });
+};
+
+const JobPosting = mongoose.model<JobPostingDoc, JobPostingModel>("JobPosting", JobPostingSchema);
 
 export { JobPosting };
