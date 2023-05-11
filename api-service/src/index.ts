@@ -6,8 +6,10 @@ import mongoose from "mongoose";
 import { JobPosting } from "../lib/JobPosting";
 import { DUMMY_JOB } from "../lib/dummy";
 import { titleIncluder } from "./titleIncluder";
-const app: Express = express();
+var cors = require('cors')
 
+const app: Express = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
