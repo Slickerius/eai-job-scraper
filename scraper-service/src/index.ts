@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import Config from './types/configs';
-
+import {JobPosting} from './models/jobs'
 dotenv.config();
 
 let browser: any = null;
@@ -18,6 +18,8 @@ const init = (async() => {
   await mongoose.connect(process.env.MONGO_URI).catch((err) => {
     console.error(err);
   });
+  await JobPosting.deleteMany()
+  console.log("Successfully connected")
   
   const config: Config = JSON.parse(fs.readFileSync(`./config.json`).toString());
 
