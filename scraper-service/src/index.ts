@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import Config from './types/configs';
+import scrapeLinkedIn from './functions/scrapeLinkedIn';
 
 dotenv.config();
 
@@ -32,7 +33,7 @@ const init = (async() => {
 });
 
 const scrape = async(browser: any, config: Config) => {
-  scrapeKalibrr(browser, config);
+  scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 };
 
 init();

@@ -8,11 +8,13 @@ const KALIBRR_CARD_LOCATION_CLASS = `.k-text-subdued.k-block`;
 const KALIBRR_CARD_COMPANY_CLASS = `a.k-text-subdued`;
 
 const scrapeKalibrr = async(browser: any, config: Config) => {
-  const context: any = await browser.createIncognitoBrowserContext();
-  const page: any = await context.newPage();
+  for (let i = 0; i < 4; i++) {
+    const context: any = await browser.createIncognitoBrowserContext();
+    const page: any = await context.newPage();
 
-  await page.setUserAgent(config.userAgent);
-  await scrapeKalibrrJobsIter(0, page, config);
+    await page.setUserAgent(config.userAgent);
+    scrapeKalibrrJobsIter(i, page, config);
+  }
 };
 
 const scrapeKalibrrJobsIter = async(jobId: number, page: any, config: Config) => {
@@ -56,6 +58,8 @@ const scrapeKalibrrJobsIter = async(jobId: number, page: any, config: Config) =>
       console.error(`Failed to save job: ${err}`);
     }
   }
+
+  await page.close();
 };
 
 export default scrapeKalibrr;
