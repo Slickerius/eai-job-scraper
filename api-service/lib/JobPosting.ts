@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export interface JobPostingAttributes {
   title: string;
-  publicationDate: Date;
+  publicationDate?: Date;
   location: string;
   company: string;
   source: string;
@@ -11,7 +11,7 @@ export interface JobPostingAttributes {
 
 interface JobPostingDoc extends mongoose.Document {
   title: string;
-  publicationDate: Date;
+  publicationDate?: Date;
   location: string;
   company: string;
   source: string;
@@ -37,7 +37,7 @@ const JobPostingSchema = new mongoose.Schema<JobPostingDoc>(
     },
     publicationDate: {
       type: mongoose.Schema.Types.Date,
-      required: true,
+      required: false,
     },
     source: {
       type: String,
