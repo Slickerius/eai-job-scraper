@@ -16,6 +16,7 @@
     "puppeteer": "19.5.0 "
   },
   "devDependencies": {
+    "@types/puppeteer": "^7.0.4",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   }

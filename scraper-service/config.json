@@ -1,6 +1,11 @@
 {
   "urls": {
-    "karir": [],
+    "karir": [
+      "https://karir.com/search?q=programmer&page=",
+      "https://karir.com/search?q=data&page=",
+      "https://karir.com/search?q=network&page=",
+      "https://karir.com/search?q=cyber+security&page="
+    ],
     "jobstreet": [
       "https://www.jobstreet.co.id/id/programmer-jobs?pg=",
       "https://www.jobstreet.co.id/id/data-jobs?pg=",
