@@ -1,3 +1,4 @@
+import { Browser, BrowserContext, Page } from "puppeteer";
 import { JobPosting } from "../models/jobs";
 import Config from "../types/configs";
 
@@ -14,30 +15,36 @@ const LINKEDIN_JOB_DATE_CLASS = `.jobs-unified-top-card__posted-date`;
 const LINKEDIN_JOB_LOCATION_CLASS = `.jobs-unified-top-card__bullet`;
 const LINKEDIN_JOB_COMPANY_CLASS = `.ember-view.t-black.t-normal`;
 
-const scrapeLinkedIn = async(browser: any, config: Config, linkedInUsername: string, linkedInPassword: string) => {
-  const context: any = await browser.createIncognitoBrowserContext();
-  const page: any = await context.newPage();
-  await page.setUserAgent(config.userAgent);
-
-  await page.goto(LINKEDIN_LOGIN_PAGE);
-
-  await page.$eval('input#username', (el: any, linkedInUsername: string) => {
-    el.value = linkedInUsername
-  }, linkedInUsername);
+const scrapeLinkedIn = async (browser: Browser, config: Config, linkedInUsername: string, linkedInPassword: string) => {
   
-  await page.$eval('input#password', (el: any, linkedInPassword: string) => {
-    el.value = linkedInPassword
-  }, linkedInPassword);
+    const context: BrowserContext = await browser.createIncognitoBrowserContext();
+    const page: Page = await context.newPage();
+    await page.setUserAgent(config.userAgent);
 
-  await page.$eval(LINKEDIN_LOGIN_BUTTON, (btn: any) => btn.click());
-  
-  await page.waitForNavigation();
-  await page.waitForTimeout(1000);
+    await page.goto(LINKEDIN_LOGIN_PAGE);
 
-  scrapeLinkedInIter(0, page, config);
+    await page.$eval('input#username', (el: any, linkedInUsername: string) => {
+      el.value = linkedInUsername
+    }, linkedInUsername);
+
+    await page.$eval('input#password', (el: any, linkedInPassword: string) => {
+      el.value = linkedInPassword
+    }, linkedInPassword);
+
+    await page.$eval(LINKEDIN_LOGIN_BUTTON, (btn: any) => btn.click());
+
+    await page.waitForNavigation();
+    await page.waitForTimeout(1000);
+    await page.waitForTimeout(20000);
+
+    for (let i = 0; i < 4; i++) {
+      await scrapeLinkedInIter(i, page, config);
+    }
+
+    await page.close();
 };
 
-const scrapeLinkedInIter = async(jobId: number, page: any, config: Config) => {
+const scrapeLinkedInIter = async (jobId: number, page: Page, config: Config) => {
   await page.goto(config.urls.linkedin[jobId]);
   let cards: any[] = await page.$$(LINKEDIN_CARD_CLASS);
 
@@ -86,13 +93,14 @@ const scrapeLinkedInIter = async(jobId: number, page: any, config: Config) => {
 
       await createdJob.save();
 
-    } catch(e) {
-      console.log(e);
+    } catch(e: any) {
+      if (e.toString().includes(`duplicate key`)) {
+        console.log(`Failed to save job: ${e}`);
+      } else console.log(e);
     }
 
     await page.goBack();
   }
-  await page.close();
 };
 
 export default scrapeLinkedIn;

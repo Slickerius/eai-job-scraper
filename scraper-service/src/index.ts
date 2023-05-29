@@ -44,7 +44,7 @@ const init = async () => {
 
   scrape(browser, config);
 
-  scrapeTask.start();
+  // scrapeTask.start();
 };
 
 const scrape = async (browser: puppeteer.Browser, config: Config) => {
