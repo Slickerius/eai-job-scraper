@@ -16,29 +16,33 @@ const LINKEDIN_JOB_LOCATION_CLASS = `.jobs-unified-top-card__bullet`;
 const LINKEDIN_JOB_COMPANY_CLASS = `.ember-view.t-black.t-normal`;
 
 const scrapeLinkedIn = async (browser: Browser, config: Config, linkedInUsername: string, linkedInPassword: string) => {
-  
+    console.log(`Scraping job data from LinkedIn . . .`);
+
     const context: BrowserContext = await browser.createIncognitoBrowserContext();
     const page: Page = await context.newPage();
     await page.setUserAgent(config.userAgent);
 
-    await page.goto(LINKEDIN_LOGIN_PAGE);
+    try {
+      await page.goto(LINKEDIN_LOGIN_PAGE);
 
-    await page.$eval('input#username', (el: any, linkedInUsername: string) => {
-      el.value = linkedInUsername
-    }, linkedInUsername);
+      await page.$eval('input#username', (el: any, linkedInUsername: string) => {
+        el.value = linkedInUsername
+      }, linkedInUsername);
 
-    await page.$eval('input#password', (el: any, linkedInPassword: string) => {
-      el.value = linkedInPassword
-    }, linkedInPassword);
+      await page.$eval('input#password', (el: any, linkedInPassword: string) => {
+        el.value = linkedInPassword
+      }, linkedInPassword);
 
-    await page.$eval(LINKEDIN_LOGIN_BUTTON, (btn: any) => btn.click());
+      await page.$eval(LINKEDIN_LOGIN_BUTTON, (btn: any) => btn.click());
 
-    await page.waitForNavigation();
-    await page.waitForTimeout(1000);
-    await page.waitForTimeout(20000);
+      await page.waitForNavigation();
+      await page.waitForTimeout(2500);
 
-    for (let i = 0; i < 4; i++) {
-      await scrapeLinkedInIter(i, page, config);
+      for (let i = 0; i < config.urls.linkedin.length; i++) {
+        await scrapeLinkedInIter(i, page, config);
+      }
+    } catch (e) {
+      console.log(`Error while scraping LinkedIn: ${e}`);
     }
 
     await page.close();

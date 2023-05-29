@@ -8,12 +8,18 @@ const KALIBRR_CARD_LOCATION_CLASS = `.k-text-subdued.k-block`;
 const KALIBRR_CARD_COMPANY_CLASS = `a.k-text-subdued`;
 
 const scrapeKalibrr = async (browser: Browser, config: Config) => {
-  for (let i = 0; i < 4; i++) {
-    const context: BrowserContext = await browser.createIncognitoBrowserContext();
-    const page: Page = await context.newPage();
+  console.log(`Scraping job data from Kalibrr . . .`);
 
-    await page.setUserAgent(config.userAgent);
-    scrapeKalibrrJobsIter(i, page, config);
+  try {
+    for (let i = 0; i < config.urls.kalibrr.length; i++) {
+      const context: BrowserContext = await browser.createIncognitoBrowserContext();
+      const page: Page = await context.newPage();
+    
+      await page.setUserAgent(config.userAgent);
+      scrapeKalibrrJobsIter(i, page, config);
+    }
+  } catch (e) {
+    console.log(`Error while scraping Kalibrr: ${e}`);
   }
 };
 

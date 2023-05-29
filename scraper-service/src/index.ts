@@ -8,6 +8,7 @@ import scrapeLinkedIn from "./functions/scrapeLinkedIn";
 import { JobPosting } from "./models/jobs";
 import scrapeKarir from "./functions/scrapeKarir";
 import { scrapeTask } from "./cron";
+import scrapeJobStreet from "./functions/scrapeJobStreet";
 
 dotenv.config();
 
@@ -30,7 +31,7 @@ const init = async () => {
   const config: Config = JSON.parse(fs.readFileSync(`./config.json`).toString());
 
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     executablePath: process.env.CHROME_BIN || undefined,
     args: [
       `--no-sandbox`,
@@ -44,12 +45,14 @@ const init = async () => {
 
   scrape(browser, config);
 
-  // scrapeTask.start();
+  scrapeTask.start();
 };
 
 const scrape = async (browser: puppeteer.Browser, config: Config) => {
-  scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
-  // scrapeKarir(browser, config);
+  await scrapeKarir(browser, config);
+  await scrapeJobStreet(browser, config);
+  await scrapeKalibrr(browser, config);
+  await scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 };
 
 init();

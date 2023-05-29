@@ -9,17 +9,22 @@ const KARIR_CARD_LOCATION_CLASS = `.tdd-location`;
 const KARIR_CARD_COMPANY_CLASS = `.tdd-company-name`;
 
 const scrapeKarir = async (browser: Browser, config: Config) => {
-  for (let i = 0; i < 4; i++) {
-    const context: BrowserContext = await browser.createIncognitoBrowserContext();
-    const page: Page = await context.newPage();
+  console.log(`Scraping job data from Karir.com . . .`);
 
-    await page.setUserAgent(config.userAgent);
-    await scrapeKarirJobsIter(i, page, config);
+  try {
+    for (let i = 0; i < config.urls.karir.length; i++) {
+      const context: BrowserContext = await browser.createIncognitoBrowserContext();
+      const page: Page = await context.newPage();
+
+      await page.setUserAgent(config.userAgent);
+      await scrapeKarirJobsIter(i, page, config);
+    }
+  } catch (e) {
+    console.log(`Error while scraping Karir.com: ${e}`);
   }
 };
 
 const scrapeKarirJobsIter = async (jobId: number, page: Page, config: Config) => {
-  console.log("Scrapping :" + config.urls.karir[jobId]);
   await page.goto(config.urls.karir[jobId]);
 
   await page.waitForSelector(KARIR_CARD_CLASS);
@@ -47,7 +52,7 @@ const scrapeKarirJobsIter = async (jobId: number, page: Page, config: Config) =>
 
     const jobCompany: string = await jobCompanyEl.evaluate((el: any) => el.textContent);
 
-    const jobSource: string = `KARIR`;
+    const jobSource: string = `Karir.com`;
 
     const jobUrlEl = await card.$("a.--blue");
 

@@ -6,6 +6,7 @@ import * as fs from "fs";
 import Config from "./types/configs";
 import scrapeLinkedIn from "./functions/scrapeLinkedIn";
 import scrapeKarir from "./functions/scrapeKarir";
+import scrapeJobStreet from "./functions/scrapeJobStreet";
 dotenv.config();
 
 let browser: puppeteer.Browser | null = null;
@@ -28,7 +29,8 @@ export const scrapeTask = cron.schedule("0 1 * * *", async () => {
     ],
   });
 
-  await scrapeKalibrr(browser, config);
-  await scrapeLinkedIn(browser, config, LINKEDIN_USERNAME, LINKEDIN_PASSWORD);
   await scrapeKarir(browser, config);
+  await scrapeKalibrr(browser, config);
+  await scrapeJobStreet(browser, config);
+  await scrapeLinkedIn(browser, config, LINKEDIN_USERNAME, LINKEDIN_PASSWORD);
 });
