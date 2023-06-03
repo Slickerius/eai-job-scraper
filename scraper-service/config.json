@@ -19,10 +19,10 @@
       "https://www.kalibrr.com/id-ID/job-board/te/cyber-security/"
     ],
     "linkedin": [
-      "https://www.linkedin.com/jobs/search/?keywords=programmer",
-      "https://www.linkedin.com/jobs/search/?keywords=data",
-      "https://www.linkedin.com/jobs/search/?keywords=network",
-      "https://www.linkedin.com/jobs/search/?keywords=cyber%20security"
+      "https://www.linkedin.com/jobs/search/?keywords=programmer&start=",
+      "https://www.linkedin.com/jobs/search/?keywords=data&start=",
+      "https://www.linkedin.com/jobs/search/?keywords=network&start=",
+      "https://www.linkedin.com/jobs/search/?keywords=cyber%20security&start="
     ]
   },
   "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
