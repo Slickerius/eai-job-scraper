@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, Page } from "puppeteer";
 import { JobPosting } from "../models/jobs";
 import Config from "../types/configs";
+import convertLinkedInPostedToDate from "../utils/convertLinkedInDate";
 
 // Jobs to be scraped. From my observation this number varies from 18-25, I don't really know what to do about it
 const SCRAPE_AMOUNT = 20;
@@ -88,7 +89,7 @@ const scrapeLinkedInIter = async (jobId: number, page: Page, config: Config) => 
 
       const createdJob = new JobPosting({
         title: jobTitle,
-        publicationDate: new Date(),
+        publicationDate: convertLinkedInPostedToDate(jobPostedDate),
         location: jobLocation,
         company: jobCompany,
         source: jobSource,

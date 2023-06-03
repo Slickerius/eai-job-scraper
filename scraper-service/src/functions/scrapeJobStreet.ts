@@ -1,6 +1,7 @@
 import { JobPosting } from "../models/jobs";
 import Config from "../types/configs";
 import { Browser, BrowserContext, Page } from "puppeteer";
+import convertJobStreetPostedToDate from "../utils/convertJobStreetDate";
 
 const JOBSTREET_CARD_CLASS = `#jobList > div > div:nth-child(2) > div > div > div > div > article > div > div > div`;
 const JOBSTREET_CARD_TITLE_CLASS = `div:nth-child(1) > div > h1 > a > div > span`;
@@ -54,6 +55,7 @@ const scrapeJobStreetJobsIter = async (jobId: number, page: Page, config: Config
     const createdJob = new JobPosting({
       title: jobTitle,
       location: jobLocation,
+      publicationDate: convertJobStreetPostedToDate(jobPostedDate),
       company: jobCompany,
       source: jobSource,
       url: jobUrl,

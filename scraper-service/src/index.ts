@@ -31,7 +31,7 @@ const init = async () => {
   const config: Config = JSON.parse(fs.readFileSync(`./config.json`).toString());
 
   browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     executablePath: process.env.CHROME_BIN || undefined,
     args: [
       `--no-sandbox`,
@@ -45,13 +45,13 @@ const init = async () => {
 
   scrape(browser, config);
 
-  scrapeTask.start();
+  // scrapeTask.start();
 };
 
 const scrape = async (browser: puppeteer.Browser, config: Config) => {
-  await scrapeKarir(browser, config);
-  await scrapeJobStreet(browser, config);
-  await scrapeKalibrr(browser, config);
+  // await scrapeKarir(browser, config);
+  // await scrapeJobStreet(browser, config);
+  // await scrapeKalibrr(browser, config);
   await scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 };
 
