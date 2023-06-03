@@ -2,6 +2,9 @@ import { Browser, BrowserContext, Page } from "puppeteer";
 import { JobPosting } from "../models/jobs";
 import Config from "../types/configs";
 import convertLinkedInPostedToDate from "../utils/convertLinkedInDate";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 // Jobs to be scraped. From my observation this number varies from 18-25, I don't really know what to do about it
 const SCRAPE_AMOUNT = 18;
@@ -121,6 +124,9 @@ const scrapeLinkedInIter = async (jobId: number, page: Page, config: Config) => 
     }
 
     idx++;
+
+    if (idx == parseInt(process.env.JOB_SCRAPE_PAGE_LIMIT || '0'))
+      break;
   }
 };
 
