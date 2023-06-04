@@ -26,33 +26,31 @@ export const Filter: FC<{ setQuery: React.Dispatch<QueryInterface>; query: Query
       </div>
       <div className="col-span-3 md:col-span-1">
         <label className="md:text-lg mb-2 text-gray-200 font-semibold">Lokasi</label>
-        <Select
-          instanceId={"location"}
-          isMulti
-          className="text-black "
-          options={TitleOptions}
-          onChange={(e: any) => {
-            setQuery({
-              ...query,
-              location: e.map((x: any) => x.value),
-            });
-          }}
-        />
+        <div className="w-full">
+          <input
+            className="w-full text-black"
+            onChange={(e) =>
+              setQuery({
+                ...query,
+                location: [e.target.value],
+              })
+            }
+          />
+        </div>
       </div>
       <div className="col-span-3 md:col-span-1">
         <label className="md:text-lg mb-2 text-gray-200 font-semibold">Perusahaan</label>
-        <Select
-          instanceId={"company"}
-          isMulti
-          className="text-black "
-          options={TitleOptions}
-          onChange={(e: any) => {
-            setQuery({
-              ...query,
-              company: e.map((x: any) => x.value),
-            });
-          }}
-        />
+        <div className="w-full">
+          <input
+            className="w-full text-black"
+            onChange={(e) =>
+              setQuery({
+                ...query,
+                company: [e.target.value],
+              })
+            }
+          />
+        </div>
       </div>
       <div className="col-span-3 md:col-span-1">
         <label className="md:text-lg mb-2 text-gray-200 font-semibold" htmlFor="">

@@ -58,6 +58,7 @@ app.get("/", async function (req, res) {
         },
       ],
     });
+    console.log(result.length);
     res.json(result);
   } catch (err) {
     res.status(500);
@@ -76,17 +77,17 @@ const start = async () => {
     console.error(err);
   });
   // await JobPosting.deleteMany();
-  const promises: Promise<any>[] = DUMMY_JOB.map((job) => {
-    const jobposting = JobPosting.build(job);
-    return jobposting.save();
-  });
-  await Promise.all(promises)
-    .then((res) => {
-      console.log("success menambah dummy data");
-    })
-    .catch((err) => {
-      console.log("Error: " + err);
-    });
+  // const promises: Promise<any>[] = DUMMY_JOB.map((job) => {
+  //   const jobposting = JobPosting.build(job);
+  //   return jobposting.save();
+  // });
+  // await Promise.all(promises)
+  //   .then((res) => {
+  //     console.log("success menambah dummy data");
+  //   })
+  //   .catch((err) => {
+  //     console.log("Error: " + err);
+  //   });
   app.listen(8000, async () => {
     console.log("Open on 8000");
   });
