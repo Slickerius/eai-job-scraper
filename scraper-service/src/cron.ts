@@ -17,7 +17,7 @@ export const scrapeTask = cron.schedule("0 1 * * *", async () => {
   const config: Config = JSON.parse(fs.readFileSync(`./config.json`).toString());
 
   browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     executablePath: process.env.CHROME_BIN || undefined,
     args: [
       `--no-sandbox`,

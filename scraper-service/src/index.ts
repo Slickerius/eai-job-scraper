@@ -47,14 +47,14 @@ const init = async () => {
 
   scrape(browser, config);
 
-  // scrapeTask.start();
+  scrapeTask.start();
 };
 
 const scrape = async (browser: puppeteer.Browser, config: Config) => {
   await scrapeKarir(browser, config);
-  // await scrapeJobStreet(browser, config);
-  // await scrapeKalibrr(browser, config);
-  // await scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
+  await scrapeJobStreet(browser, config);
+  await scrapeKalibrr(browser, config);
+  await scrapeLinkedIn(browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 };
 
 init();

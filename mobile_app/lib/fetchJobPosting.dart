@@ -8,7 +8,7 @@ Future<List<JobPostingModel>> fetchJobPostings(
   var response;
   try {
     response = await http.get(
-      Uri.http("localhost:8000", '',
+      Uri.http("10.0.2.2:8000", '',
           {"title": title, "company": company, "location": location}),
       headers: {
         "Access-Control-Allow-Origin": "*",
